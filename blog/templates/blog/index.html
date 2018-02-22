@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+
+
+{% block main %}
+    {% get_new_article as atrticle_list %}
+                {% for x in article_list %}
+                <article class="post post-{{ x.pk }}">
+                    <header class="entry-header">
+                        <h1 class="entry-title">
+                            <a href="{{ article.get_url }}">{{ x.atitle }}</a>
+                        </h1>
+                        <div class="entry-meta">
+                            <span class="post-category"><a href="#">{{ x.category.cname }}</a></span>
+                            <span class="post-date"><a href="#"><time class="entry-date"
+                                                                      datetime="{{ x.create_time }}">{{ x.create.time }}</time></a></span>
+                            <span class="post-author"><a href="#">{{ x.uesr }}</a></span>
+                            <span class="comments-link"><a href="#">4 评论</a></span>
+                            <span class="views-count"><a href="#">588 阅读</a></span>
+                        </div>
+                    </header>
+                    <div class="entry-content clearfix">
+                        <p>{{ x.zhaiyao }}</p>
+                        <div class="read-more cl-effect-14">
+                            <a href="{{ article.get_url }}" class="more-link">继续阅读 <span class="meta-nav">→</span></a>
+                        </div>
+                    </div>
+                </article>
+                {% empty %}
+                    <div class="no-post">暂时还没有发布的文章！</div>
+                {% endfor %}
+
+                <!-- 简单分页效果
+                <div class="pagination-simple">
+                    <a href="#">上一页</a>
+                    <span class="current">第 6 页 / 共 11 页</span>
+                    <a href="#">下一页</a>
+                </div>
+                -->
+                <div class="pagination">
+                    <ul>
+                        <li><a href="">1</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">4</a></li>
+                        <li><a href="">5</a></li>
+                        <li class="current"><a href="">6</a></li>
+                        <li><a href="">7</a></li>
+                        <li><a href="">8</a></li>
+                        <li><a href="">...</a></li>
+                        <li><a href="">11</a></li>
+                    </ul>
+                </div>
+{% endblock main %}
+
+
+
+                {% block toc %}
+                <div class="widget widget-recent-posts">
+                    <h3 class="widget-title">最新文章</h3>
+                    <ul>
+                        <li>
+                            <a href="#">Django 博客开发入门教程：前言</a>
+                        </li>
+                        <li>
+                            <a href="#">Django 博客使用 Markdown 自动生成文章目录</a>
+                        </li>
+                        <li>
+                            <a href="#">部署 Django 博客</a>
+                        </li>
+                    </ul>
+                </div>
+                {% new-date as date_list %}
+                <div class="widget widget-archives">
+                    <h3 class="widget-title">归档</h3>
+                    <ul>
+                        {% for date in date_list %}
+                        <li>
+                            <a href="{% url 'blog:guidang' date.year date.month %}">{{ date.year }}年{{ date.month }}月</a>
+                        </li>
+                        {% empty %}
+                        <h6>暂无归档！</h6>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <div class="widget widget-category">
+                    <h3 class="widget-title">分类</h3>
+                    {% new_category as my_category %}
+                    <ul>
+                        {% for category in my_category %}
+                        <li>
+                            <a href="{% url 'blog:category' category.pk %}">{{ category.cname }} <span class="post-count">(13)</span></a>
+                        </li>
+                        {% empty %}
+                        <h7>暂无分类！</h7>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+
+                <div class="widget widget-tag-cloud">
+                    <h3 class="widget-title">标签云</h3>
+                    {% new_tag as tag_list %}
+                    <ul>
+                        {% for tag in tag_list %}
+                        <li>
+                            <a href="#">{{ tag.tname }}</a>
+                        </li>
+                        {% empty %}
+                            <h7>没有标签</h7>
+                        {% endfor %}
+
+
+                    </ul>
+                </div>
+                <div class="rss">
+                    <a href=""><span class="ion-social-rss-outline"></span> RSS 订阅</a>
+                </div>
+                {% endblock toc %}
+
+
+
